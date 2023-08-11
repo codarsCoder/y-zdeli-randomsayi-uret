@@ -1,11 +1,10 @@
 <?php
 
-$start = microtime(true); // Başlangıç zamanını al. Bu, işlem süresini ölçmek için kullanılacak.
+$start = time(); // Başlangıç zamanını al
 
-echo "Başladı <br>"; // İşlemin başladığını ekrana yaz.
-
-function generateRandomNumber() { // Rastgele bir sayı üreten bir fonksiyon tanımla.
-    // Sayının çıkma şansını sayının karesi olarak belirle. Bu, her sayı için bir olasılık değeri içeren bir dizi oluşturur.
+echo "Başladı <br>";
+function generateRandomNumber() {
+    // Sayının çıkma şansını sayının karesi olarak belirle
     $chance = array(
         1 => 1,
         2 => 4,
@@ -33,35 +32,52 @@ function generateRandomNumber() { // Rastgele bir sayı üreten bir fonksiyon ta
         24 => 576
     );
 
-    // PHP'nin kendi rand() fonksiyonunu kullanarak, dizideki olasılık değerlerinin toplamına eşit veya daha küçük bir rastgele sayı üret.
+    // PHP'nin kendi rand() fonksiyonunu kullan
     $randomNumber = rand(1, array_sum($chance));
 
-    // Dizideki her sayı ve olasılık değeri için bir döngü başlat.
     foreach ($chance as $number => $probability) {
-        // Eğer rastgele sayı, olasılık değerinden küçük veya eşitse, o sayıyı döndür. Bu, o sayının çıkacağı anlamına gelir.
         if ($randomNumber <= $probability) {
             return $number;
         } else {
-            // Eğer rastgele sayı, olasılık değerinden büyükse, rastgele sayıdan olasılık değerini çıkar. Bu, sonraki sayılara şans tanımak için yapılır.
             $randomNumber -= $probability;
         }
     }
 
-    // Eğer hiçbir sayı çıkmazsa, null değeri döndür. Bu durum çok nadir olur.
     return null;
 }
 
-$numberOfRuns = 1000000; // Kaç kere rastgele sayı üretileceğini belirle. Bu durumda bir milyon kere.
+$numberOfRuns = 100;
+$numberCounts = array();
 
-$numberCounts = array(); // Her sayının kaç kere çıktığını tutmak için boş bir dizi oluştur.
-
-for ($i = 1; $i <= $numberOfRuns; $i++) { // Belirlenen sayıda rastgele sayı üretmek için bir döngü başlat.
-    $randomNumber = generateRandomNumber(); // Fonksiyonu çağırarak rastgele bir sayı üret.
-    if (!isset($numberCounts[$randomNumber])) { // Eğer üretilen sayının dizideki bir anahtar olarak var olup olmadığını kontrol et.
-        $numberCounts[$randomNumber] = 1; // Eğer yoksa, dizide o anahtarla birlikte değeri bir olan bir eleman oluştur. Bu, o sayının ilk kez çıktığını gösterir.
+for ($i = 1; $i <= $numberOfRuns; $i++) {
+    $randomNumber = generateRandomNumber();
+    if (!isset($numberCounts[$randomNumber])) {
+        $numberCounts[$randomNumber] = 1;
     } else {
-        $numberCounts[$randomNumber]++; // Eğer varsa, dizideki o anahtarın değerini bir arttır. Bu, o sayının tekrar çıktığını gösterir.
+        $numberCounts[$randomNumber]++;
     }
 }
 
-$end = microtime(true); // Bitiş zamanını al. Bu,
+$end = time(); // Bitiş zamanını al
+$executionTime = ($end - $start); // İşlem süresini hesapla
+
+?>
+<div class="temizle"> <?php 
+echo "İşlem $executionTime saniye sürdü\n";
+echo "Çıkma Frekansları:\n";
+
+// Keylere göre büyükten küçüğe sıralayarak sonuçları yazdır
+arsort($numberCounts);
+
+// Çıkmayanları bul ve sona eklemek için 1'den 24'e döngü ile kontrol et
+for ($i = 1; $i <= 24; $i++) {
+    if (!isset($numberCounts[$i])) {
+        $numberCounts[$i] = 0;
+    }
+}
+
+foreach ($numberCounts as $number => $count) {
+    echo "Sayı $number: $count kere <br>";
+}
+?>
+</div>
