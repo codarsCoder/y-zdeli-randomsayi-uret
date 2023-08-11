@@ -46,7 +46,7 @@ function generateRandomNumber() {
     return null;
 }
 
-$numberOfRuns = 10000000;
+$numberOfRuns = 100000;
 $numberCounts = array();
 
 for ($i = 1; $i <= $numberOfRuns; $i++) {
@@ -78,7 +78,8 @@ for ($i = 1; $i <= 24; $i++) {
 }
 
 foreach ($numberCounts as $number => $count) {
-    echo "Sayı $number: $count kere <br>";
+    $s = $count / $numberOfRuns  * 100;
+    echo "Sayı $number: $s  % <br>";
 }
 ?>
 </div>
