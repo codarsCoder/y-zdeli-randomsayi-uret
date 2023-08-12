@@ -46,7 +46,7 @@ function generateRandomNumber() {
     return null;
 }
 
-$numberOfRuns = 100000;
+$numberOfRuns = 100;
 $numberCounts = array();
 
 for ($i = 1; $i <= $numberOfRuns; $i++) {
@@ -64,8 +64,8 @@ $executionTime = ($end - $start); // İşlem süresini hesapla
 ?>
 <div class="temizle"> <?php 
 echo "Deneme adedi: ".$numberOfRuns."<br>";
-echo "İşlem $executionTime saniye sürdü\n";
-echo "Çıkma Frekansları:\n";
+echo "İşlem $executionTime saniye sürdü <br>";
+echo "Çıkma Frekansları: <br>";
 
 // Keylere göre büyükten küçüğe sıralayarak sonuçları yazdır
 arsort($numberCounts);
